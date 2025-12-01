@@ -65,7 +65,6 @@ async function initDay(day: number) {
     const dataDirectory = `${directory}/data`;
     await ensureFile(`${dataDirectory}/0.in`);
     await ensureFile(`${dataDirectory}/1.in`);
-    await ensureFile(`${dataDirectory}/2.in`);
 }
 
 const initialiseDayCommand = new Command()
