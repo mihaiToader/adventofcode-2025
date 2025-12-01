@@ -1,10 +1,12 @@
 abstract class IOManager<IN, OUT> {
     readonly day: number;
     readonly version: string;
+    readonly problem: string;
 
-    constructor(day: number, version: string) {
+    constructor(day: number, version: string, problem: string) {
         this.day = day;
         this.version = version;
+        this.problem = problem;
     }
 
     get dataDirectory() {
@@ -16,7 +18,7 @@ abstract class IOManager<IN, OUT> {
     }
 
     get outputFile() {
-        return `${this.dataDirectory}/${this.version}.out`;
+        return `${this.dataDirectory}/${this.version}-${this.problem}.out`;
     }
 
     abstract parseInputData(data: string): IN;

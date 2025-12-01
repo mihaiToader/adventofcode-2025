@@ -45,7 +45,7 @@ function findNumberOfZeros(rotations: Rotations, options: Options) {
 }
 
 async function solveFirst(version: string) {
-    const dataManager = new DataManager(1, version);
+    const dataManager = new DataManager(1, version, "first");
     const data = await dataManager.readData();
     const options: Options = {
         start: 50,
@@ -58,7 +58,7 @@ async function solveFirst(version: string) {
 }
 
 async function solveSecond(version: string) {
-    const dataManager = new DataManager(1, version);
+    const dataManager = new DataManager(1, version, "second");
     const data = await dataManager.readData();
 
     await dataManager.writeData(data);
