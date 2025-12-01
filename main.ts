@@ -1,13 +1,6 @@
 import { Command } from "@cliffy/command";
 
-import { initDay } from "./scripts/initDay.ts";
-
-const initialiseDay = new Command()
-    .arguments("<day:number>")
-    .description("Creates the setup to solve a new day from advent of code")
-    .action(async (options: any, day: string) => {
-        await initDay(day);
-    });
+import { initDay, solveDay } from "./scripts/index.ts";
 
 await new Command()
     .name("adv2025")
@@ -16,5 +9,6 @@ await new Command()
     .action(() => {
         console.log("Use --help to get more info!");
     })
-    .command("init", initialiseDay)
+    .command("init", initDay)
+    .command("solve", solveDay)
     .parse(Deno.args);
