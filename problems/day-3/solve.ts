@@ -36,11 +36,33 @@ async function solveFirst(version: string) {
     await dataManager.writeData(maximumJoltage);
 }
 
+
 async function solveSecond(version: string) {
     const dataManager = new DataManager(3, version, "second");
     const data = await dataManager.readData();
 
-    await dataManager.writeData("out");
+    let joltage = 0
+    data.forEach((battery) => {
+        let max = parseInt(battery.slice(0, 12).join(''))
+        for (let i= 12; i<battery.length; i++) {
+            const maxSequence = `${max}`.split("").map(value => parseInt(value))
+            for (let j = 0; j < 12; j++) {
+                const newSequence = [...maxSequence.slice(0, j), ...maxSequence.slice(j+1, battery.length), battery[i]]
+                const newSequenceJoltage = parseInt(newSequence.join(''))
+                if (newSequenceJoltage > max) {
+                    max = newSequenceJoltage
+                    break
+                }
+            }
+        }
+        joltage += max
+    })
+
+    console.log(joltage)
 }
 
 export { solveFirst, solveSecond };
+
+if (import.meta.main) {
+    await solveSecond("0");
+}
