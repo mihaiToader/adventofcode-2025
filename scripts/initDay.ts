@@ -22,17 +22,17 @@ class DataManager extends IOManager<InType, OutType> {
 }
 
 async function solveFirst(version: string) {
-    const dataManager = new DataManager(1, version, 'first');
+    const dataManager = new DataManager(${day}, version, 'first');
     const data = await dataManager.readData();
 
-    await dataManager.writeData('out')
+    console.log(data)
 }
 
 async function solveSecond(version: string) {
-    const dataManager = new DataManager(1, version, 'second');
+    const dataManager = new DataManager(${day}, version, 'second');
     const data = await dataManager.readData()
 
-    await dataManager.writeData('out')
+    console.log(data)
 }
 
 export { solveFirst, solveSecond }
