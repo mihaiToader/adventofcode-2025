@@ -5,11 +5,11 @@ type OutType = any;
 
 class DataManager extends IOManager<InType, OutType> {
     parseInputData(data: string): InType {
-        return data.split('\n').map((line) => line.split(""));
+        return data.split("\n").map((line) => line.split(""));
     }
 
     parseOutputData(data: OutType): string {
-        return '';
+        return "";
     }
 }
 
@@ -30,16 +30,16 @@ function canAccessRoll(map: number[][], row: number, column: number) {
             accessCount += 1;
             return;
         }
-        if (map[x][y] === '.') {
+        if (map[x][y] === ".") {
             accessCount += 1;
             return;
         }
-    })
-    return 8 - accessCount < 4
+    });
+    return 8 - accessCount < 4;
 }
 
 async function solveFirst(version: string) {
-    const dataManager = new DataManager(4, version, 'first');
+    const dataManager = new DataManager(4, version, "first");
     const data = await dataManager.readData();
     // const data = [
     //     [
@@ -97,20 +97,20 @@ async function solveFirst(version: string) {
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[0].length; j++) {
             if (data[i][j] !== "@") {
-                continue
+                continue;
             }
             if (canAccessRoll(data, i, j)) {
-                access += 1
+                access += 1;
             }
         }
     }
-    console.log(access)
+    console.log(access);
     // await dataManager.writeData('out')
 }
 
 async function solveSecond(version: string) {
-    const dataManager = new DataManager(4, version, 'second');
-    const data = await dataManager.readData()
+    const dataManager = new DataManager(4, version, "second");
+    const data = await dataManager.readData();
     let removed = 0;
     let access = 0;
     let previousAccess = null;
@@ -118,11 +118,11 @@ async function solveSecond(version: string) {
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[0].length; j++) {
                 if (data[i][j] !== "@") {
-                    continue
+                    continue;
                 }
                 if (canAccessRoll(data, i, j)) {
-                    access += 1
-                    data[i][j] = '.'
+                    access += 1;
+                    data[i][j] = ".";
                     removed += 1;
                 }
             }
@@ -130,15 +130,15 @@ async function solveSecond(version: string) {
         // console.log(data.map(line => line.join("")).join("\n"))
         // console.log(previousAccess, access)
         if (previousAccess === access) {
-            break
+            break;
         }
-        previousAccess = access
+        previousAccess = access;
     }
-    console.log(removed)
-    await dataManager.writeData('out')
+    console.log(removed);
+    await dataManager.writeData("out");
 }
 
-export { solveFirst, solveSecond }
+export { solveFirst, solveSecond };
 
 if (import.meta.main) {
     await solveFirst("0");
