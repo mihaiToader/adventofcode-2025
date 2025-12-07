@@ -51,7 +51,88 @@ async function solveSecond(version: string) {
     const dataManager = new DataManager(7, version, "second");
     const data = await dataManager.readData();
 
-    console.log(data);
+    const beamsColumns = {};
+    for (let column = 0; column < data[0].length; column++) {
+        if (data[0][column] === "S") {
+            beamsColumns[column] = 0;
+            break;
+        }
+    }
+
+    let graph = {};
+    const addEdge = (
+        graph: Record<number, number[]>,
+        parentNode: number,
+        node: number,
+    ) => {
+        if (!graph[parentNode]) {
+            graph[parentNode] = [node];
+            return graph;
+        }
+        graph[parentNode].push(node);
+        return graph;
+    };
+
+    let node = 0;
+    for (let row = 1; row < data.length; row++) {
+        for (let column = 0; column < data[0].length; column++) {
+            if (data[row][column] !== "^") {
+                continue;
+            }
+            if (beamsColumns[column] === undefined) {
+                continue;
+            }
+            const parentNode = beamsColumns[column];
+            if (column - 1 >= 0) {
+                const leftNode = beamsColumns[column - 1];
+                if (leftNode) {
+                    graph = addEdge(graph, parentNode, leftNode);
+                } else {
+                    node++;
+                    beamsColumns[column - 1] = node;
+                    graph = addEdge(graph, parentNode, node);
+                }
+            }
+            if (column + 1 < data[0].length) {
+                const rightNode = beamsColumns[column + 1];
+                if (rightNode) {
+                    graph = addEdge(graph, parentNode, rightNode);
+                } else {
+                    node++;
+                    beamsColumns[column + 1] = node;
+                    graph = addEdge(graph, parentNode, node);
+                }
+            }
+            beamsColumns[column] = undefined;
+        }
+    }
+
+    const visited = Array.from(Array(node + 1)).map(() => 0);
+    const source = 0;
+    const stack = [];
+    stack.push(source);
+
+    let paths = 0;
+
+    const dfs = (graph, visited, node) => {
+        if (!graph[node]) {
+            paths += 1;
+            return 1;
+        }
+        let childPaths = 0;
+        graph[node].forEach((childNode) => {
+            if (visited[childNode]) {
+                childPaths += visited[childNode];
+                return;
+            }
+            childPaths += dfs(graph, visited, childNode);
+        });
+        visited[node] = childPaths;
+        return childPaths;
+    };
+
+    dfs(graph, visited, 0);
+    console.log(visited[0]);
 }
 
 export { solveFirst, solveSecond };
