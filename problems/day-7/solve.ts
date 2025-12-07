@@ -112,11 +112,8 @@ async function solveSecond(version: string) {
     const stack = [];
     stack.push(source);
 
-    let paths = 0;
-
     const dfs = (graph, visited, node) => {
         if (!graph[node]) {
-            paths += 1;
             return 1;
         }
         let childPaths = 0;
