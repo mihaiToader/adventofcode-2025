@@ -73,7 +73,7 @@ function createCircuit(
     }
 }
 
-const CIRCUITS = 1000;
+const CIRCUITS = 10;
 
 async function solveFirst(version: string) {
     const dataManager = new DataManager(8, version, "first");
@@ -103,12 +103,6 @@ async function solveFirst(version: string) {
         currentMin = min;
     }
 
-    // for (let i = 0; i < data.length; i++) {
-    //     const circuit = boxesCircuits.find(c => c.includes(i));
-    //     if (!circuit) {
-    //         boxesCircuits.push([i])
-    //     }
-    // }
     boxesCircuits.sort((c1, c2) => c2.length - c1.length);
 
     const res = boxesCircuits[0].length * boxesCircuits[1].length *
@@ -120,7 +114,35 @@ async function solveSecond(version: string) {
     const dataManager = new DataManager(8, version, "second");
     const data = await dataManager.readData();
 
-    console.log(data);
+    const boxesCircuits = [];
+    let currentMin = 0;
+    while (true) {
+        let min = Infinity;
+        let firstPoint;
+        let secondPoint;
+        for (let i = 0; i < data.length - 1; i++) {
+            for (let j = i + 1; j < data.length; j++) {
+                const distance = calculateDistance(data[i], data[j]);
+                if (distance < min && distance > currentMin) {
+                    min = distance;
+                    firstPoint = i;
+                    secondPoint = j;
+                }
+            }
+        }
+        if (firstPoint === undefined || secondPoint === undefined) {
+            console.log("oh no");
+            return;
+        }
+        createCircuit(boxesCircuits, firstPoint, secondPoint);
+        currentMin = min;
+        if (boxesCircuits[0] && boxesCircuits[0].length == data.length) {
+            const first = data[firstPoint];
+            const second = data[secondPoint];
+            console.log(first.x * second.x);
+            break;
+        }
+    }
 }
 
 export { solveFirst, solveSecond };
