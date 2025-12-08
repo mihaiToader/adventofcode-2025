@@ -67,6 +67,10 @@
       "integrity": "ddb9853b75119a2473857d691cf1ec02ad90793a2e8b4a4ac49d7354281a0cf8"
     }
   },
+  "remote": {
+    "https://deno.land/std@0.211.0/async/delay.ts": "eab3187eee39ccc8cc76d411fb21fb1801250ddb1090e486d5aec2ace5403391",
+    "https://deno.land/std@0.211.0/http/server.ts": "ddee66e9a2ee98df8b31a47fd4ad678e75a8a11f543157641fd9ea0760c20f39"
+  },
   "workspace": {
     "dependencies": [
       "jsr:@cliffy/command@^1.0.0-rc.8",
